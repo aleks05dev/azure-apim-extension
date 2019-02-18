@@ -15,6 +15,7 @@ shared VNET
 		$portal=Get-VstsInput -Name ApiPortalName
 		$rg=Get-VstsInput -Name ResourceGroupName 
 		$SwaggerPicker = Get-VstsInput -Name SwaggerPicker 
+		$UrlSchemePicker = Get-VstsInput -Name UrlSchemePicker 
 		$swaggerlocation=Get-VstsInput -Name swaggerlocation
 		$swaggercode=Get-VstsInput -Name swaggercode 
 		$swaggerartifact=Get-VstsInput -Name swaggerartifact
@@ -102,6 +103,7 @@ shared VNET
 			Authorization = "Bearer $($resp.access_token)"        
 		}
 		$json = ""
+		$protocol = ""
 		switch($SwaggerPicker)
 			{
 				"Url" {
@@ -141,8 +143,21 @@ shared VNET
 					}'
 				}
 				default {Write-Error "Invalid swagger definition"}
+			}
+			
+		switch($UrlSchemePicker)
+			{
+				"Https" {
+					$protocol = "['https']"
+				}
+				"Http" {
+					$protocol = "['http']"
+				}
+				"Both" {
+					$protocol = "['https','http']"
+				}
+				default {Write-Error "Invalid Url scheme"}
 			}		
-		
 		
 		write-host $json
 		$baseurl="$($Endpoint.Url)subscriptions/$($Endpoint.Data.SubscriptionId)/resourceGroups/$($rg)/providers/Microsoft.ApiManagement/service/$($portal)"
@@ -153,7 +168,7 @@ shared VNET
 			Invoke-WebRequest -UseBasicParsing -Uri $targeturl -Headers $headers -Body $json -Method Put -ContentType "application/json"
 			$json = '{
 				"properties": {	"id":"/apis/'+$($newapi)+'",	
-				"protocols":["https"],		
+				"protocols": "' +$($protocol)+'",		
 				"name": "'+$($newapi)+'",
 				"path": "'+$($path)+'",'+$AuthorizationBits+'
 			 }

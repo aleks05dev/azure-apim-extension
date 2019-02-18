@@ -140,6 +140,46 @@
       "visibleRule": "SwaggerPicker=Code"
     },
     {
+      "name": "UrlSchemePicker",
+      "type": "pickList",
+      "label": "Url scheme",
+      "required": true,
+      "helpMarkDown": "How should the Url scheme be configurated",
+      "defaultValue": "https",
+      "options": {
+        "Https": "Url",
+        "Http":"Code",
+        "Both":"Both"
+      }
+    },
+    {
+      "name": "UrlSchemeHttps",
+      "type": "string",
+      "label": "Url scheme as https",
+      "required": true,
+      "helpMarkDown": "The url scheme is configurated on https",
+      "defaultValue": "",
+      "visibleRule": "UrlSchemePicker=Https"
+    },
+    {
+      "name": "UrlSchemeHttp",
+      "type": "string",
+      "label": "Url scheme as http",
+      "required": true,
+      "helpMarkDown": "The url scheme is configurated on http",
+      "defaultValue": "",
+      "visibleRule": "UrlSchemePicker=Http"
+    },
+    {
+      "name": "UrlSchemeBoth",
+      "type": "string",
+      "label": "Url scheme as http/https",
+      "required": true,
+      "helpMarkDown": "The url scheme is configurated on http/https",
+      "defaultValue": "",
+      "visibleRule": "UrlSchemePicker=Both"
+    },
+    {
       "name": "targetapi",
       "type": "string",
       "label": "API Name",
